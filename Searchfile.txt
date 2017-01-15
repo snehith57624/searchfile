@@ -1,0 +1,110 @@
+package searchingFile;
+import java.nio.file.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Scanner;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+
+class searchfile{
+	public static int i=1;
+	public static Path source;
+	public static void MoveFile(String src,String dst) {
+		// TODO Auto-generated method stub
+		InputStream inStream = null;
+		OutputStream outStream = null;
+		try {
+
+	        File afile = new File(src);
+	        File bfile = new File(dst);
+	        inStream = new FileInputStream(afile);
+	        outStream = new FileOutputStream(bfile);
+	        byte[] buffer = new byte[1024];
+	        int length;
+	        while ((length = inStream.read(buffer)) > 0) {
+	            outStream.write(buffer, 0, length);
+	        }
+	        inStream.close();
+	        outStream.close();
+	        System.out.println("File is copied successful!");
+	    } catch(IOException e) {
+	        e.printStackTrace();
+	    }
+	}
+	public static void listf(String directoryName,String filename) {
+		File directory = new File(directoryName);
+       if(directory.isDirectory()){
+    	   File[] fList = directory.listFiles();
+    	   if (fList != null ){
+    	   for(File file : fList){
+    		  // System.out.println(file);
+    		   if(file.toString().endsWith(".zip")||file.toString().endsWith(".jar")||file.toString().endsWith(".rar")||file.toString().endsWith(".ear")){
+    			   //String k=file.toString().endsWith( )
+    			  // System.out.println(file.getName()); 
+    			   try {
+    				   ZipFile srcfile = new ZipFile(file.toString());
+    				   //System.out.println(srcfile);
+    				   Enumeration<? extends ZipEntry> e = srcfile.entries();
+    				   while(e.hasMoreElements()){
+    					   
+    					   ZipEntry entry = (ZipEntry)e.nextElement();
+    					  // System.out.println(entry);
+    					   if(entry.isDirectory()){
+    						   listf(entry.toString(),filename);
+    					   }
+    					   else if(entry.toString().endsWith("\\"+filename)||entry.toString().equals(filename)){
+    		    			   System.out.println("Yes found it");
+    		    			   String result2 = file.getAbsolutePath()+"\\"+filename;
+    		    			   Path res= Paths.get(result2);
+    		    			   System.out.println(result2 );
+    		    			   String result1 = entry.getName();
+    		    			//   result2.toRealPath();
+    		    			 //  System.out.println(result1 );
+    		    		   }
+    				   }
+    			   }
+    			   catch(IOException ioe){
+    				  System.out.println("Error opening zip file" + ioe); //when we get error in opening a file ,it prints the error and the location
+    				   String result = file.getAbsolutePath();
+    				//   System.out.println(result);
+    			   }
+    			   // zip closes here
+    		   }
+    		   else if(file.isDirectory()){
+    			   listf(file.toString(),filename);
+    		   }
+    		   else if(file.toString().endsWith("\\"+filename)){
+    			   System.out.println("Yes found it");
+    			   String result = file.getAbsolutePath();
+    			   System.out.println(result);
+    		   }
+    		    
+    	   }
+       }
+       }
+    } 
+/*	private static void zipFile(String source2, String result2) {
+		// TODO Auto-generated method stub
+		ZipFile 
+	}*/
+	public static void main(String[] args) throws IOException{
+		//List<File> dir = new ArrayList<File>.asList("C:","E:","D:","F:");
+		Scanner sc = new Scanner(System.in);
+		//String result = null;
+		// List<File> rList = new ArrayList<File>(); if u want to give all directories to search give a for loop scanning all folders
+		 String filename = sc.nextLine();
+		//System.out.println(filename);
+		String str = sc.nextLine();
+		listf(str,filename);
+		//System.out.println(result);
+		sc.close();
+	}
+}
