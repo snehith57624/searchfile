@@ -91,10 +91,6 @@ class searchfile{
        }
        }
     } 
-/*	private static void zipFile(String source2, String result2) {
-		// TODO Auto-generated method stub
-		ZipFile 
-	}*/
 	public static void main(String[] args) throws IOException{
 		//List<File> dir = new ArrayList<File>.asList("C:","E:","D:","F:");
 		Scanner sc = new Scanner(System.in);
